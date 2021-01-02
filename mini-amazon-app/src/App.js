@@ -46,6 +46,9 @@ function App() {
             <Home />
           </Route>
         </Switch>
+        <p className="copyright">
+          Copyright © 2020 Powered by Xinxin(Stephen) Wang
+        </p>
       </Router>
     </div>
   );

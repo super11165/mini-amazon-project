@@ -29,11 +29,6 @@ function Checkout() {
               rating={item.rating}
             />
           ))}
-          {/* checkoutProject */}
-          {/* checkoutProject */}
-          {/* checkoutProject */}
-          {/* checkoutProject */}
-          {/* checkoutProject */}
         </div>
       </div>
       <div className="checkout__right">
