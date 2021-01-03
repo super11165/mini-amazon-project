@@ -67,3 +67,9 @@
   margin-right: 10px;
   color: white;
 }
+
+.header__option:hover,
+.header__optionBasket:hover {
+  color: #cd9042;
+  transition: 0.5s ease;
+}

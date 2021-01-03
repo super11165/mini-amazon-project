@@ -7,6 +7,7 @@ import CheckoutProduct from "./CheckoutProduct";
 import "./Payment.css";
 import { useStateValue } from "./StateProvider";
 import axios from "./axios";
+import { db } from "./firebase";
 
 function Payment() {
   const history = useHistory();
@@ -26,7 +27,7 @@ function Payment() {
         //stripe expects the total in a currencies subunits
         url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
       });
-      setClientSecret(response.data.clientSecrut);
+      setClientSecret(response.data.clientSecret);
     };
     getClientSecret();
   }, [basket]);
@@ -37,6 +38,7 @@ function Payment() {
   const handleSubmit = async (event) => {
     //fancy stripe stuff
     event.preventDefault();
+
     setProcessing(true);
 
     const payload = await stripe
@@ -47,10 +49,26 @@ function Payment() {
       })
       .then(({ paymentIntent }) => {
         //paymentIntent = payment confirmation
+
+        db.collection("users")
+          .doc(user?.uid)
+          .collection("orders")
+          .doc(paymentIntent.id)
+          .set({
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+          });
+
         setSucceeded(true);
         setError(null);
         setProcessing(false);
-        history.replaceState("/orders");
+
+        dispatch({
+          type: "EMPTY_BASKET",
+        });
+
+        history.replace("/orders");
       });
   };
 
@@ -90,6 +108,7 @@ function Payment() {
                 image={item.image}
                 price={item.price}
                 rating={item.rating}
+                hideButton
               />
             ))}
           </div>
@@ -117,6 +136,7 @@ function Payment() {
                   <span>{processing ? <p>processing</p> : "Buy Now"}</span>
                 </button>
               </div>
+              {error && <div>{error}</div>}
             </form>
           </div>
         </div>

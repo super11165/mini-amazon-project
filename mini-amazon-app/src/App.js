@@ -1,9 +1,11 @@
-import react, { useEffect } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Header from "./Header";
+import Footer from "./Footer";
 import Home from "./Home";
 import Checkout from "./Checkout";
 import Payment from "./Payment";
+import Orders from "./Orders";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./Login";
 import { auth } from "./firebase";
@@ -42,6 +44,10 @@ function App() {
     <div className="app">
       <Router>
         <Switch>
+          <Route path="/orders">
+            <Header />
+            <Orders />
+          </Route>
           <Route path="/login">
             <Login />
           </Route>
@@ -49,6 +55,7 @@ function App() {
             <Header />
             <Checkout />
           </Route>
+
           <Route path="/payment">
             <Header />
             <Elements stripe={promise}>
@@ -60,9 +67,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
-        <p className="copyright">
-          Copyright © 2020 Powered by Xinxin(Stephen) Wang
-        </p>
+        <Footer />
       </Router>
     </div>
   );
